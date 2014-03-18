@@ -1,0 +1,68 @@
+FOR ONE DEGREE OF PARALLELISM or CLIENT_TRHEADS V VAL_LEN (servers = 1)
+
+READ:
+THRU:
+select VAL_LEN, CLIENT_THREADS, ((VAL_LEN * 100000) / 1048576) /  ((strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME)) as C from results where R_W='read' and SERVERS=1;
+
+EX_TIME:
+select VAL_LEN, CLIENT_THREADS, (strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME) from results where R_W='read' and SERVERS=1;
+
+LAT in ms:
+select VAL_LEN, CLIENT_THREADS, (((strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME))/100000.00) * 1000 from results where R_W='read' and SERVERS=1;
+
+WRITE:
+THRU:
+select VAL_LEN, CLIENT_THREADS, ((VAL_LEN * 100000) / 1048576) /  ((strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME)) as C from results where R_W='write' and SERVERS=1;
+
+EX_TIME:
+select VAL_LEN, CLIENT_THREADS, (strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME) from results where R_W='write' and SERVERS=1;
+
+LAT in ms:
+select VAL_LEN, CLIENT_THREADS, (((strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME))/100000.00) * 1000 from results where R_W='write' and SERVERS=1;
+
+
+
+
+
+FOR NUM MACHINES VS CLIENT THREADS: (val_len = 1 for lat, 1024 for thru)
+
+READ:
+THRU:
+select SERVERS, CLIENT_THREADS, ((VAL_LEN * 100000) / 1048576) /  ((strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME)) as C from results where R_W='read' and VAL_LEN=1024;
+
+LAT in ms:
+select SERVERS, CLIENT_THREADS, (((strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME))/100000.00) * 1000 from results where R_W='read' and VAL_LEN=1;
+
+WRITE:
+THRU:
+select SERVERS, CLIENT_THREADS, ((VAL_LEN * 100000) / 1048576) /  ((strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME)) as C from results where R_W='write' and VAL_LEN=1024;
+
+LAT in ms:
+select SERVERS, CLIENT_THREADS, (((strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME))/100000.00) * 1000 from results where R_W='write' and VAL_LEN=1;
+
+
+FOR NUM_MACHINES VS VAL_LEN: (client_threads = 32)
+
+READ:
+THRU:
+select VAL_LEN, SERVERS, ((VAL_LEN * 100000) / 1048576) /  ((strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME)) as C from results where R_W='read' and CLIENT_THREADS=32 and VAL_LEN < 16385;
+
+LAT in ms:
+select VAL_LEN, SERVERS, (((strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME))/100000.00) * 1000 from results where R_W='read' and CLIENT_THREADS=32 and VAL_LEN < 16385;
+
+WRITE:
+THRU:
+select VAL_LEN, SERVERS, ((VAL_LEN * 100000) / 1048576) /  ((strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME)) as C from results where R_W='write' and CLIENT_THREADS=32 and VAL_LEN < 16385;
+
+LAT in ms:
+select VAL_LEN, SERVERS, (((strftime('%H', '0' || EXEC_TIME) *60*60) + (strftime('%M', '0' || EXEC_TIME) * 60) + strftime('%f', '0' || EXEC_TIME))/100000.00) * 1000 from results where R_W='write' and CLIENT_THREADS=32 and VAL_LEN < 16385;
+
+
+
+
+
+
+.out out.csv
+.mode csv
+.headers off
+
